@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8">
+		<title>Analizador</title>
+		<script src="js/lexerv2.js" type="text/javascript"></script>		
+		<script src="js/arbolExp.js" type="text/javascript"></script>
+		<script src="js/parserv2.js" type="text/javascript"></script>
+		<script src="js/treant-js-master/Treant.js" type="text/javascript"></script>
+		<script src="js/treant-js-master/vendor/raphael.js" type="text/javascript"></script>
+		<link rel="stylesheet" href="css/estilo.css" type="text/css"/>
+		<link rel="stylesheet" href="css/analizador.css" type="text/css"/>
+		<link rel="stylesheet" href="js/treant-js-master/Treant.css" type="text/css"/>
+		<link rel="icon" type="image/ico" href="imagenes/favicon.ico" />
+		
+		<script>
+			var miArbolASA
+			var miArbolASASimp
+			function pulsar(e) {
+				if (e.keyCode === 13 && !e.shiftKey) {
+					e.preventDefault();
+					document.getElementById("botonFormula").click();
+				}
+			}
+			
+			var  simple_chart_config =[{container: "#ASA",hideRootNode: true}]
+			function construyeHijosASA(nodos,padre){
+				var nodo_actual={parent:padre, text: {name: nodos.nodo.concat((nodos.atributo!=undefined)?(","+nodos.atributo):"")}}
+				var resul=[nodo_actual]
+				
+				
+				for(var i=0; i<nodos.hijos.length ; i++)
+					resul=resul.concat(construyeHijosASA(nodos.hijos[i],nodo_actual))
+				
+				
+				return resul
+			}						
+			
+			var padre={text: "S"}
+			
+			function construyeHijosExp(nodos,padre){
+				var nodo_actual={parent:padre}				
+				var resul=[nodo_actual]
+				
+				switch(nodos.constructor.name){
+					case "NodoConst":
+						nodo_actual.text={name: nodos.toString()}
+						//resul=resul.concat({parent:nodo_actual,text:{name:nodos.toString()}})
+					break;
+					case "NodoIdent":
+						nodo_actual.text={name: nodos.toString()}
+						//resul=resul.concat({parent:nodo_actual,text:{name:nodos.toString()}})
+					break;
+					
+					case "NodoFun":
+						nodo_actual.text={name: "Fun"}
+						resul=resul.concat({parent:nodo_actual,text:{name:nodos.ident}})
+						for(let i=0; i<nodos.arg.length; i++)
+							resul=resul.concat(construyeHijosExp(nodos.arg[i],nodo_actual))
+					break;
+					
+					case "NodoMenos":
+						nodo_actual.text={name: "-"}
+						resul=resul.concat(construyeHijosExp(nodos.p,nodo_actual))
+					break;
+					
+					case "NodoSuma":
+					case "NodoResta":
+						nodo_actual.text={name: "+"}
+						resul=resul.concat(construyeHijosExp(nodos.izq,nodo_actual))
+						resul=resul.concat(construyeHijosExp(nodos.der,nodo_actual))
+					break;
+					
+					case "NodoMult":
+						nodo_actual.text={name: "*"}
+						resul=resul.concat(construyeHijosExp(nodos.izq,nodo_actual))
+						resul=resul.concat(construyeHijosExp(nodos.der,nodo_actual))
+					break;
+					case "NodoDiv":
+						nodo_actual.text={name: "/"}
+						resul=resul.concat(construyeHijosExp(nodos.izq,nodo_actual))
+						resul=resul.concat(construyeHijosExp(nodos.der,nodo_actual))
+					break;
+					case "NodoExp":
+						nodo_actual.text={name: "^"}
+						resul=resul.concat(construyeHijosExp(nodos.izq,nodo_actual))
+						resul=resul.concat(construyeHijosExp(nodos.der,nodo_actual))
+					break;			
+				}				
+				
+				return resul
+			}
+			
+			
+			function dibujaArbol(){
+				borrarArboles()
+				var tree=parser(lexer(document.getElementById("formula").value),false)
+				
+				miArbolASA=new Treant(simple_chart_config.concat([padre].concat(construyeHijosASA(tree,padre))));
+			}
+			
+			function dibujaArbolSimp(){
+				borrarArboles()
+				var tree=parser(lexer(document.getElementById("formula").value))
+				
+				miArbolASA=new Treant(simple_chart_config.concat([padre].concat(construyeHijosASA(tree,padre))));
+			}
+			
+			function borrarArboles(){
+				if(miArbolASA!=undefined)
+					miArbolASA.destroy()	
+				if(miArbolASASimp!=undefined)
+					miArbolASASimp.destroy()
+			}
+			
+		</script>
+		
+	</head>
+	<body>
+		<header>
+		<h1>Analizador</h1>
+		
+		<nav>
+			<ul class="menu">
+				<li><a href="index.html">Inicio</a></li>
+				<li><a href="analizador.html">Analizador</a></li>
+				<li><a href="derivador.html">Derivador</a></li>
+				<li><a href="drawer.html">Representación gráfica</a></li>
+			</ul>
+		</nav>
+		</header>
+		
+		<section class="main">
+			<section class="articles">
+				<div>
+				<p>
+				En esta sección podemos introducir una expresión matemática y pulsando el botón dibujar el árbol sintáctico abstracto (ASA) de la expresión.
+				Hay dos opciones, dibujar el ASA completo, es decir, el desarrollado por nuestra gramática, o dibujar un ASA simplificado en el que se eliminan los nodos
+				que empiecen por "A", que fueron añadidos para que la gramática estuviera factorizada y para eliminar la recursividad por la izquierda.
+				Los números que acompañan a los nodos con nombre "T", son: el 0 para constantes, el 1 para identificadores de variables y el 2 para funciones.
+				
+				<p>
+				Características del lenguaje aceptado por la gramática:
+				
+				<ul>
+					<li>Los identificados de las variables empiezan por una letra, seguida de más letras, no incluyen la "ñ" y pueden contener números.</li>
+					<li>Se admite el uso de paréntesis.</li>
+					<li>Los operadores válidos son "+", "-", "*", "/" y "^".</li>
+					<li>El exponente de una potencia solo puede ser una variable, contante o función. Para exponentes más complejos usamos los paréntesis.</li>
+					<li>Hay dos identificadores que no pueden ser usados como variables porque son constantes: "PI" y "E".</li>
+					<li>Las funciones de un argumento admitidas son: cos, sen, tan, acos, asen, atan, cosh, senh, tanh, acosh, asenh, atanh, exp, log y sqrt.</li>
+					<li>Podemos definir integrales usando la función de 4 argumentos "int". Estos argumentos se separan mediante comas. Los argumentos son:
+						<ol>
+							<li>Integrando</li>
+							<li>Variable de integración</li>
+							<li>Límite inferior</li>
+							<li>Límite superior</li>
+						</ol>
+					
+					</li>
+					<li>Admitimos números decimales usando la coma decimal como el punto.</li>
+				</ul>
+				</p>
+				
+				</p>
+				</div>
+			</section>
+			
+			<section class="formularios">
+				<form>
+					<textarea placeholder="Introduce aquí tu fórmula" id="formula" onkeypress="pulsar(event)"></textarea>
+					</br>
+					<input type="button" id="botonFormula" value="Dibujar ASA" onclick='dibujaArbol()'>
+					<input type="button" id="botonFormulaSimp" value="Dibujar ASA Simplificado" onclick='dibujaArbolSimp()'>
+				</form>
+				
+			</section>
+			
+			<div class="containerASA">
+				<div id="ASA" class="ASA"></div>
+			</div>
+		</section>
+		
+		<footer>Víctor Manuel Cerrato Molina</footer>
+		
+	</body>
+
+</html>

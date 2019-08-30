@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8">
+		<title>Derivador</title>
+		<script src="js/lexerv2.js" type="text/javascript"></script>
+		<script src="js/arbolExp.js" type="text/javascript"></script>
+		<script src="js/parserv2.js" type="text/javascript"></script>
+		<script src="js/treant-js-master/Treant.js" type="text/javascript"></script>
+		<script src="js/treant-js-master/vendor/raphael.js" type="text/javascript"></script>
+		<link rel="stylesheet" href="css/estilo.css" type="text/css"/>
+		<link rel="stylesheet" href="css/derivador.css" type="text/css"/>
+		<link rel="stylesheet" href="js/treant-js-master/Treant.css" type="text/css"/>
+		<link rel="icon" type="image/ico" href="imagenes/favicon.ico" />
+		
+		<script>
+			var miArbol
+			var miArbolDer
+			function pulsar(e) {
+				if (e.keyCode === 13 && !e.shiftKey) {
+					e.preventDefault();
+					var boton = document.getElementById("botonFormula");
+					boton.click();
+				}
+			}
+			
+			var  simple_chart_config =[{container: "#ArbolExp",hideRootNode: true}]
+			function construyeHijosASA(nodos,padre){
+				var nodo_actual={parent:padre, text: {name: nodos.nodo.concat((nodos.atributo!=undefined)?(","+nodos.atributo):"")}}
+				var resul=[nodo_actual]
+				
+				
+				for(var i=0; i<nodos.hijos.length ; i++)
+					resul=resul.concat(construyeHijosASA(nodos.hijos[i],nodo_actual))
+				
+				
+				return resul
+			}						
+			
+			var padre={text: "S"}
+			
+			function construyeHijosExp(nodos,padre){
+				var nodo_actual={parent:padre}				
+				var resul=[nodo_actual]
+				
+				switch(nodos.constructor.name){
+					case "NodoConst":
+						nodo_actual.text={name: nodos.toString()}
+						//resul=resul.concat({parent:nodo_actual,text:{name:nodos.toString()}})
+					break;
+					case "NodoIdent":
+						nodo_actual.text={name: nodos.toString()}
+						//resul=resul.concat({parent:nodo_actual,text:{name:nodos.toString()}})
+					break;
+					
+					case "NodoFun":
+						nodo_actual.text={name: "Fun"}
+						resul=resul.concat({parent:nodo_actual,text:{name:nodos.ident}})
+						for(let i=0; i<nodos.arg.length; i++)
+							resul=resul.concat(construyeHijosExp(nodos.arg[i],nodo_actual))
+					break;
+					
+					case "NodoMenos":
+						nodo_actual.text={name: "-"}
+						resul=resul.concat(construyeHijosExp(nodos.p,nodo_actual))
+					break;
+					
+					case "NodoSuma":
+					case "NodoResta":
+						nodo_actual.text={name: "+"}
+						resul=resul.concat(construyeHijosExp(nodos.izq,nodo_actual))
+						resul=resul.concat(construyeHijosExp(nodos.der,nodo_actual))
+					break;
+					
+					case "NodoMult":
+						nodo_actual.text={name: "*"}
+						resul=resul.concat(construyeHijosExp(nodos.izq,nodo_actual))
+						resul=resul.concat(construyeHijosExp(nodos.der,nodo_actual))
+					break;
+					case "NodoDiv":
+						nodo_actual.text={name: "/"}
+						resul=resul.concat(construyeHijosExp(nodos.izq,nodo_actual))
+						resul=resul.concat(construyeHijosExp(nodos.der,nodo_actual))
+					break;
+					case "NodoExp":
+						nodo_actual.text={name: "^"}
+						resul=resul.concat(construyeHijosExp(nodos.izq,nodo_actual))
+						resul=resul.concat(construyeHijosExp(nodos.der,nodo_actual))
+					break;			
+				}				
+				
+				return resul
+			}
+			
+			function dibujaArbol(arbol){
+				borrarArboles()
+				var tree=parser(lexer(document.getElementById("formula").value),true)
+				miArbolExp=new Treant(simple_chart_config.concat([padre].concat(construyeHijosExp(tree.toArbolExp(),padre))));
+			}
+			
+			function dibujaArbolDer(arbol){
+				borrarArboles()
+				var tree=parser(lexer(document.getElementById("formula").value),true)
+				miArbolExp=new Treant(simple_chart_config.concat([padre].concat(construyeHijosExp(tree.toArbolExp().derivada(document.getElementById('variable').value),padre))));
+			}
+			
+			function borrarArboles(){
+				if(miArbol!=undefined)
+					miArbol.destroy()	
+				if(miArbolDer!=undefined)
+					miArbolDer.destroy()
+			}
+		
+		</script>
+		
+	</head>
+	<body>
+		<header>
+		<h1>Derivador</h1>
+		
+		<nav>
+			<ul class="menu">
+				<li><a href="index.html">Inicio</a></li>
+				<li><a href="analizador.html">Analizador</a></li>
+				<li><a href="derivador.html">Derivador</a></li>
+				<li><a href="drawer.html">Representación gráfica</a></li>
+			</ul>
+		</nav>
+		</header>
+		
+		<section class="main">
+			<section class="articles">
+				<div>
+				<p>
+				En esta sección podemos introducir una expresión matemática y dibujar el árbol de expresiones y de la expresión o el de su derivada dependiendo del botón que usemos.
+				Para derivar hay que indicar respecto a que variable estamos derivando. El árbol de expresiones surge de procesar el ASA de una expresión admitada por nuestra gramática
+				y transformarlo en un árbol más legible y práctico con el objetivo de trabajar con este en el calculo de derivadas y simplificaciones de expresiones.
+				
+				<p>
+				Nuestras expresiones deben cumplir:
+				
+				<ul>
+					<li>Los identificados de las variables empiezan por una letra, seguida de más letras, no incluyen la "ñ" y pueden contener números.</li>
+					<li>Se admite el uso de paréntesis.</li>
+					<li>Los operadores válidos son "+", "-", "*", "/" y "^".</li>
+					<li>El exponente de una potencia solo puede ser una variable, contante o función. Para exponentes más complejos usamos los paréntesis.</li>
+					<li>Hay dos identificadores que no pueden ser usados como variables porque son constantes: "PI" y "E".</li>
+					<li>Las funciones de un argumento admitidas son: cos, sen, tan, acos, asen, atan, cosh, senh, tanh, acosh, asenh, atanh, exp, log y sqrt.</li>
+					<li>Podemos definir integrales usando la función de 4 argumentos "int". Estos argumentos se separan mediante comas. Los argumentos son:
+						<ol>
+							<li>Integrando</li>
+							<li>Variable de integración</li>
+							<li>Límite inferior</li>
+							<li>Límite superior</li>
+						</ol>
+					
+					</li>
+					<li>Admitimos números decimales usando la coma decimal como el punto.</li>
+				</ul>
+				</p>
+				
+				</p>
+				</div>
+			</section>
+			
+			<section class="formularios">
+				<form>
+					<textarea placeholder="Introduce aquí tu fórmula" id="formula" onkeypress="pulsar(event)"></textarea>
+					<br/>
+					<input type="text" placeholder="Variable" id="variable" size="3" onkeypress="pulsar(event)">
+					</br>
+					<input type="button" id="botonFormula" value="Dibujar Árbol de expresiones" onclick="dibujaArbol()">
+					<input type="button" id="botonFormulaDer" value="Dibujar Árbol de expresiones de la expresión derivada" onclick="dibujaArbolDer()">
+				</form>
+			</section>
+			<div class="containerAExp">
+				<div id="ArbolExp" class="ArbolExp"></div>
+			</div>
+		</section>
+		
+		<footer>Víctor Manuel Cerrato Molina</footer>
+
+		
+	</body>
+
+</html>

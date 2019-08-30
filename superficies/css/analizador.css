@@ -1,0 +1,24 @@
+.containerASA {
+	text-align: center;
+}
+
+.ASA {
+	display:inline-block;
+	border-radius: 5px;
+	background-color:#ccc;
+	margin: 10px;
+}
+
+.articles {
+	display:inline-block;
+	border-radius: 5px;
+	background-color:#ccc;
+	padding: 10px;
+	margin: 10px;
+}
+
+
+/* Estilo para el arbol*/
+.chart { height: 159px; width: 332px; margin: 5px; margin: 5px auto; border: 3px solid #DDD; border-radius: 3px; }
+.node { color: blue; border: 2px solid #C8C8C8; border-radius: 3px; background-color:#fff; }
+.node p { font-size: 20px; line-height: 20px; height: 20px; font-weight: bold; padding: 3px; margin: 0; }

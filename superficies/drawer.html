@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8">
+		<title>Superficies en el espacio: algunos resultados y su representación</title>
+		<link rel="stylesheet" href="css/estilo.css" type="text/css"/>
+		<link rel="stylesheet" href="css/drawer.css" type="text/css"/>
+		<link rel="icon" type="image/ico" href="imagenes/favicon.ico" />
+		<script src="js/three.min.js" type="text/javascript"></script>
+		<script src="js/TrackballControls.js" type="text/javascript"></script>
+		<script src="js/dat.gui.min.js" type="text/javascript"></script>
+		
+		<script src="js/lexerv2.js" type="text/javascript"></script>
+		<script src="js/parserv2.js" type="text/javascript"></script>		
+		<script src="js/arbolExp.js" type="text/javascript"></script>
+		
+	</head>
+	<body>
+		
+		<header>
+		<h1>Superficies en el espacio: algunos resultados y su representación</h1>
+		
+		<nav>
+			<ul class="menu">
+				<li><a href="index.html">Inicio</a></li>
+				<li><a href="analizador.html">Analizador</a></li>
+				<li><a href="derivador.html">Derivador</a></li>
+				<li><a href="drawer.html">Representación gráfica</a></li>
+			</ul>
+		</nav>
+		</header>
+		
+		<section class="main">
+			<section class="articles">
+				<div>
+				<p>En esta sección vamos a realizar la representación gráfica de superficies y grafos bidimensionales. La linea del eje X es la de color rojo, la del 
+				eje Y, verde y la del eje Z, azul.
+				</p>
+				
+				<p id="textoInicial">Seleccione una opción del menú desplegable:</p>
+				
+				<p id="textoGrafo" style="display: none;">En este formulario podemos introducir la expresión de una función de una variable real, así como el intervalo de 
+				definición de ésta para dibujar su traza sobre el eje Z en el plano Y=0.
+				</p>
+				
+				<p id="textoRevol" style="display: none;">En este formulario podemos dar la expresión de la coordenada X y Z de una curva contenida en el plano Y=0,
+				para dibujar la superficie de revolución de dicha curva girando alrededor del eje Z, a la cual podemos llamar perfil o generatriz de la superficie.
+				</p>
+				
+				<p id="textoParam" style="display: none;">En este formulario podemos dar las coordenadas X, Y y Z de una parametrización de una superficie, parámetros y su dominio
+				para dibujarla.
+				</p>
+				
+				<div id="textoRevolImp" style="display: none;">
+				<p>En este formulario se da la opción de dibujar la superficie de revolución cuya generatriz está en el plano Y=0 y cumple:
+				</p>
+				Si (x(t),0,z(t)) es la generatriz y H es la curvatura media constante y s(t) es el ángulo que forma x' y z' con el vector (0,0,1) se cumple el sistema de EDOs:
+				<ul>
+					<li>x'(t)=sen(s(t))</li>
+					<li>z'(t)=cos(s(t))</li>
+					<li>s'(t)=cos(s(t))/x(t)-2*H</li>
+				</ul>
+				
+				<p>
+				Nótese que E es la energía la cual es constante y se define por E=x(t)*cos(s(t))-H*x(t)^2
+				</p>
+				
+				<p>
+				Dando un valor inicial y un valor de la curvatura media así como un dominio podemos representar la superficie de revolución sobre el eje Z generada por dicha curva.
+				</p>
+				
+				</div>
+				
+				<div id="expGUI" style="display: none;">
+				<p>Descripción de las opciones:</p>
+				<ul>
+					<li>Luz</li>
+						<ul>
+							<li>Luz ambiental</li>
+								<ul>
+									<li>Intensidad: Valor que indica la intensidad de la luz ambiente, la cual viene de todas direcciones y no produce brillo en la malla.</li>
+								</ul>
+							<li>Luz direccional</li>
+								<ul>
+									<li>Azimutal: Ángulo que controla las coordenadas esféricas de la posición de la luz direccional.</li>
+									<li>Colatitud: Ángulo que controla las coordenadas esféricas de la posición de la luz direccional.</li>
+									<li>Intensidad: Intensidad de brillo de la luz direccional, la cual produce brillos en las mallas.</li>
+									<li>Luz Frontal: Cambia los ángulos de las coordenadas esféricas para posicionar la luz en el frente.</li>
+									<li>Luz Trasera: Cambia los ángulos de las coordenadas esféricas para posicionar la luz en la parte trasera.</li>
+									<li>Luz Superior: Cambia los ángulos de las coordenadas esféricas para posicionar la luz en la parte superior.</li>
+									<li>Luz Inferior: Cambia los ángulos de las coordenadas esféricas para posicionar la luz en la parte inferior.</li>
+									<li>Luz Derecha: Cambia los ángulos de las coordenadas esféricas para posicionar la luz a la derecha.</li>
+									<li>Luz Izquierda: Cambia los ángulos de las coordenadas esféricas para posicionar la luz a la izquierda.</li>
+								</ul>
+						</ul>
+					<li>Malla</li>
+						<ul>
+							<li>Ver malla: Provoca que veamos los triángulos de la superficie sin rellenar pudiendo ver así como se genera la malla con claridad.</li>
+							<li>Dibujar normales: Dibuja los normales de los vértices de la malla.</li>
+							<li>Invertir normales: Invierte la orientación de los normales de la malla (afecta a la iluminación de esta)</li>
+							<li>Girar: Hace que la malla gire sobre el eje vertical que la atraviesa por su centro.</li>
+							<li>Curvatura: Podemos alternar entre un coloreado de curvatura media o de Gauss.</li>
+							<li>Textura isocurvas:</li>
+							<ul>
+								<li>Activar textura: Activa la textura para dibujar isocurvas en la superficie.</li>
+								<li>Repetir en X: Número de repeticiones en el eje X del dominio de la textura. Podemos modificarlo para una mejor visualización.</li>
+								<li>Repetir en Y: Número de repeticiones en el eje Y del dominio de la textura. Podemos modificarlo para una mejor visualización.</li>
+							</ul>
+							<li>Activar sombras: Dibuja un prisma que encierra la malla del cual solo se ven sus caras interiores, y además activa que se proyecten sombras sobre este y que nuestra superficie proyecte sombras,
+								pudiendo así ver la sombra que proyecta nuestra superficie.
+							</li>
+							<li>Intensidad del brillo: Intensidad con la que la malla refleja el la luz.</li>
+							<li>Color del brillo: Color del brillo que refleja la malla.</li>
+							<li>Resolución en X: Resolución en el eje X del dominio a la que se genera la malla.</li>
+							<li>Resolución en Y: Resolución en el eje Y del dominio a la que se genera la malla.</li>
+							<li>Perfil/Superficie: En el caso de superficies de revolución podemos alternar entre ver su perfil o la superficie.</li>
+						</ul>
+				</ul>
+				
+				<p>Teclas con funciones:</p>
+				
+				<ul>
+					<li>Tecla "e": Reinicia la cámara.</li>
+					<li>Tecla "m": Activa la opción "Ver malla".</li>
+					<li>Tecla "n": Activa la opción "Dibujar normales".</li>
+					<li>Tecla "c": Activa la opción "Invertir normales".</li>
+					<li>Tecla "g": Activa la opción "Girar".</li>
+					<li>Tecla "k": Activa la opción alterna la opción "Curvatura" cambiando entre la media y la de Gauss.</li>
+					<li>Tecla "p": Activa la opción "Perfil/Superficie".</li>
+				</ul>
+				
+				</div>
+				
+				
+			</section>
+			
+			<section class="formularios" align="center">
+				
+				<select id="menu" onchange='cambiaObjeto(this.options[this.selectedIndex].value)'>
+					<option selected="true" disabled="disabled">Seleccione una opción</option>
+					<option value="grafo2DOpt">Grafo sobre el eje Z</option>
+					<option value="revolOpt">Superficie de revolución alrededor del eje Z</option>
+					<option value="paramOpt">Superficie en ecuaciones paramétricas</option>
+					<option value="EDOOpt">Superficie de revolución mediante EDOs (c. media constante)</option>
+					
+				</select>
+				
+				</br>
+				</br>
+				<form id="grafo2D">
+					<textarea placeholder="Introduce aquí tu grafo" rows="5" cols="50" id="formula" ></textarea>
+					<br/>
+					<input type="text" placeholder="Variable" id="variable" size="3">
+					</br>
+					Intervalo: (
+					<input type="text" placeholder="a" id="a" size="1" > , 
+					<input type="text" placeholder="b" id="b" size="1" > )
+					</br>
+					<input type="button" id="botonGrafo" value="Dibujar grafo sobre el eje Z" onclick="dibujaGrafo2D()">
+					</br>
+					<input type="button" id="botonGrafoD" value="Dibujar grafo derivada sobre el eje Z" onclick="dibujaGrafo2D(1)">
+					</br>
+					<input type="button" id="botonGrafoD2" value="Dibujar grafo 2ª derivada sobre el eje Z" onclick="dibujaGrafo2D(2)">
+				</form>
+				
+				<form id="sRevol">
+					<textarea placeholder="Introduce aquí la coordenada X" rows="5" cols="50" id="formulaXGen" ></textarea>
+					<textarea placeholder="Introduce aquí la coordenada Z" rows="5" cols="50" id="formulaZGen" ></textarea>
+					<br/>
+					<input type="text" placeholder="Variable" id="variableGen" size="3" >
+					</br>
+					Intervalo: (
+					<input type="text" placeholder="a" id="ax" size="1" > , 
+					<input type="text" placeholder="b" id="bx" size="1" > )
+					</br>
+					<input type="button" id="botonSupRevol" value="Dibujar superficie de revolución sobre el eje Z" onclick="dibujaRevol()">
+					</br>
+					</br>
+					<input type="button" id="botonBalon" value="Rellenar para balón de rugby" onclick='dibujaObjeto("balonRugby")'>
+					<input type="button" id="botonEsfera" value="Rellenar para esfera" onclick='dibujaObjeto("esfera")'>
+					<input type="button" id="botonPandeado" value="Rellenar para superficie de tipo pandeado" onclick='dibujaObjeto("pandeado")'>
+					</br>
+					<input type="button" id="botonPseudoesfera" value="Rellenar para pseudoesfera" onclick='dibujaObjeto("pseudoesfera")'>
+					<input type="button" id="botonHiperboloide" value="Rellenar para hiperboloide" onclick='dibujaObjeto("hiperboloide")'>
+					<input type="button" id="botonConico" value="Rellenar para superficie de tipo cónico" onclick='dibujaObjeto("conico")'>
+				</form>
+				
+				<form id="sParam">
+					<textarea placeholder="Introduce aquí la coordenada X" rows="5" cols="50" id="formulaX" ></textarea>
+					<textarea placeholder="Introduce aquí la coordenada Y" rows="5" cols="50" id="formulaY" ></textarea>
+					<textarea placeholder="Introduce aquí la coordenada Z" rows="5" cols="50" id="formulaZ" ></textarea>
+					<br/>
+					Parámetros: 
+					<input type="text" placeholder="u" id="variableU" size="1" >
+					<input type="text" placeholder="v" id="variableV" size="1" >
+					</br>
+					Rectángulo: (
+					<input type="text" placeholder="a" id="aa" size="1" > , 
+					<input type="text" placeholder="b" id="bb" size="1" > )x(
+					<input type="text" placeholder="c" id="cc" size="1" > , 
+					<input type="text" placeholder="d" id="dd" size="1" > )
+					</br>
+					<input type="button" id="botonSuperficie" value="Dibujar superficie" onclick="dibujaSuper()">
+				</form>
+				
+				<form id="sRevolEDO">
+					Condición inicial:</br>
+					(x0,z0,s0)=(<input type="text" placeholder="x0" id="x0" size="1" >,
+					<input type="text" placeholder="z0" id="z0" size="1" >,
+					<input type="text" placeholder="s0" id="s0" size="1" >)
+					</br>
+					Curvatura media: H=<input type="text" placeholder="H" id="H" size="1">
+					</br>
+					Intervalo: (
+					<input type="text" placeholder="a" id="alpha" size="1" > , 
+					<input type="text" placeholder="b" id="beta" size="1" > )
+					<p id="E"></p>
+					</br>
+					<input type="button" id="botonSuperficieImp" value="Dibujar superficie" onclick="dibujaSuperRevolImp()">
+					</br>
+					</br>
+					<input type="button" id="botonOndul" value="Rellenar para onduloide" onclick='dibujaObjeto("onduloide")'>
+					<input type="button" id="botonNodoid" value="Rellenar para nodoide" onclick='dibujaObjeto("nodoide")'>
+					<input type="button" id="botonCatenoid" value="Rellenar para catenoide" onclick='dibujaObjeto("catenoide")'>
+					</br>
+					<input type="button" id="botonPlano" value="Rellenar para plano" onclick='dibujaObjeto("plano")'>
+					<input type="button" id="botonCilindro" value="Rellenar para cilindro" onclick='dibujaObjeto("cilindro")'>
+					<input type="button" id="botonEsfera2" value="Rellenar para esfera" onclick='dibujaObjeto("esfera2")'>
+				</form>
+				
+				
+			
+			<div id="canvas" align="center" style="padding: 20px; position:relative;">
+				<div id="gui" style="display: none; padding: 30px;position: absolute; top:0; right: 0;"></div>
+			</div>
+			
+		</section>
+		
+		
+		<script src="js/log.js" type="text/javascript"></script>
+		<script src="js/superficies.js" type="text/javascript"></script>
+		
+		<script>
+			
+			function dibujaGrafo2D(n=0){
+				var a=parser(lexer(document.getElementById("a").value)).toArbolExp().evaluar({})
+				var b=parser(lexer(document.getElementById("b").value)).toArbolExp().evaluar({})
+				var variable=document.getElementById("variable").value
+				
+				clearScene()
+				controls.target0.set(0,0,(a+b)/2)
+				controls.position0.set(0,10,(a+b)/2)
+				controls.reset()
+				
+				if(a<b){
+					var funcion=parser(lexer(document.getElementById("formula").value)).toArbolExp()
+					for(let i=0 ; i<n ; i++)
+						funcion=funcion.derivada(variable)
+						
+					var grafo=function(t){var dicc={}; dicc[variable]=t; return new THREE.Vector2(t,funcion.evaluar(dicc))}
+					objetoActual=new Grafo2D(grafo,new Intervalo(a,b))
+					scene.add(objetoActual.line)
+					render()
+				}else
+					alert("Intervalo degenerado")
+
+			}
+			
+			function dibujaRevol(){
+				var a=parser(lexer(document.getElementById("ax").value)).toArbolExp().evaluar({})
+				var b=parser(lexer(document.getElementById("bx").value)).toArbolExp().evaluar({})
+				if(a<b){									
+					objetoActual=new SuperficieRevolDifereciableExplicita(document.getElementById("formulaXGen").value,document.getElementById("formulaZGen").value,document.getElementById("variableGen").value,new Intervalo(a,b),options.resolucionX,options.resolucionY)
+					dibuja3D(objetoActual)
+				}else
+					alert("Intervalo degenerado")
+			
+			}
+			
+			function dibujaSuper(){
+				var a=parser(lexer(document.getElementById("aa").value)).toArbolExp().evaluar({})
+				var b=parser(lexer(document.getElementById("bb").value)).toArbolExp().evaluar({})
+				var c=parser(lexer(document.getElementById("cc").value)).toArbolExp().evaluar({})
+				var d=parser(lexer(document.getElementById("dd").value)).toArbolExp().evaluar({})
+				
+				if(a<b && c<d){
+					var u=document.getElementById("variableU").value
+					var v=document.getElementById("variableV").value
+					var X=document.getElementById("formulaX").value
+					var Y=document.getElementById("formulaY").value
+					var Z=document.getElementById("formulaZ").value
+					objetoActual=new SuperficieDiferenciableExplicita(X,Y,Z,u,v,new Rectangulo(new Intervalo(a,b),new Intervalo(c,d)),options.resolucionX,options.resolucionY)
+					dibuja3D(objetoActual)
+				}else
+					alert("Intervalo degenerado")
+				
+			}
+			
+			//Dibuja la superficie de revolución dadas las ecuaciones para su generatriz que hacen que su curvatura media sea constante
+			/*
+			* Si (x(t),0,z(t)) es la generatriz y H es la curvatura media constante y s(t) es el ángulo que forma x' y z' con el vector (0,0,1) las ecuaciones son
+			*	
+			*	x'(t)=sen(s(t))
+			*	z'(t)=cos(s(t))
+			*	s'(t)=cos(s(t))/x(t)-2*H
+			*
+			* Notese que E es la energía la cual es constante y se define por E=x(t)*cos(s(t))-H*x(t)^2	
+			*/
+			
+			function dibujaSuperRevolImp(){
+				var x0=parser(lexer(document.getElementById("x0").value)).toArbolExp().evaluar({})//0.001+0*(1-1/Math.SQRT2)/2
+				var z0=parser(lexer(document.getElementById("z0").value)).toArbolExp().evaluar({})
+				var s0=parser(lexer(document.getElementById("s0").value)).toArbolExp().evaluar({})
+				var H=parser(lexer(document.getElementById("H").value)).toArbolExp().evaluar({})
+				var a=parser(lexer(document.getElementById("alpha").value)).toArbolExp().evaluar({})
+				var b=parser(lexer(document.getElementById("beta").value)).toArbolExp().evaluar({})
+				var E=(Math.abs(x0*Math.cos(s0)-H*x0*x0)<0.001)?0:x0*Math.cos(s0)-H*x0*x0
+				document.getElementById("E").innerHTML="E="+E.toString()+"</br>4EH="+(4*E*H).toString()			
+				
+				if(a<b){
+					var XSis= function(x,z,s,t){
+						if(Math.abs(Math.sin(s))<0.0001)
+							return 0
+						return Math.sin(s)	
+					}
+
+					var ZSis= function(x,z,s,t){
+						if(Math.abs(Math.cos(s))<0.0001)
+							return 0
+						return Math.cos(s)	
+					}
+
+					var SSis= function(x,z,s,t){
+						if(Math.abs(Math.cos(s))<0.0001)
+							return -2*H
+						return Math.cos(s)/x-2*H	
+					}
+
+					var XXSis= function(x,z,s,t){
+						return Math.cos(s)*SSis(x,z,s,t)
+					}
+
+					var ZZSis= function(x,z,s,t){
+						return -Math.sin(s)*SSis(x,z,s,t)
+					}
+					
+					
+					objetoActual= new SuperficieRevolDifereciableImplicita(XSis,ZSis,SSis,XXSis,ZZSis,0,x0,z0,s0,new Intervalo(a,b),options.resolucionX,options.resolucionY)
+					dibuja3D(objetoActual)
+				}else
+					alert("Intervalo degenerado")
+			}			
+			
+			//Al cambiar en la lista cambiamos los objetos del documento para que se visualicen correctamente
+			function cambiaObjeto(opt){
+			
+				//clearScene()
+				//controls.reset()
+				document.getElementById("textoInicial").style.display="none"
+				
+				switch(opt){
+				
+					case "grafo2DOpt":
+						document.getElementById("grafo2D").style.display="inline-block"
+						document.getElementById("sRevol").style.display="none"
+						document.getElementById("sParam").style.display="none"
+						document.getElementById("sRevolEDO").style.display="none"
+						document.getElementById("textoGrafo").style.display="block"
+						document.getElementById("textoRevol").style.display="none"
+						document.getElementById("textoParam").style.display="none"
+						document.getElementById("textoRevolImp").style.display="none"
+						document.getElementById("expGUI").style.display="none"
+						document.getElementById("gui").style.display="none"
+					break;
+					
+					case "revolOpt":
+						document.getElementById("grafo2D").style.display="none"
+						document.getElementById("sRevol").style.display="inline-block"
+						document.getElementById("sParam").style.display="none"
+						document.getElementById("sRevolEDO").style.display="none"
+						document.getElementById("textoGrafo").style.display="none"
+						document.getElementById("textoRevol").style.display="block"
+						document.getElementById("textoParam").style.display="none"
+						document.getElementById("textoRevolImp").style.display="none"
+						document.getElementById("expGUI").style.display="block"
+						document.getElementById("gui").style.display="block"
+					break;
+					
+					case "paramOpt":
+						document.getElementById("grafo2D").style.display="none"
+						document.getElementById("sRevol").style.display="none"
+						document.getElementById("sParam").style.display="inline-block"
+						document.getElementById("sRevolEDO").style.display="none"
+						document.getElementById("textoGrafo").style.display="none"
+						document.getElementById("textoRevol").style.display="none"
+						document.getElementById("textoParam").style.display="block"
+						document.getElementById("textoRevolImp").style.display="none"
+						document.getElementById("expGUI").style.display="block"
+						document.getElementById("gui").style.display="block"
+					break;
+					
+					case "EDOOpt":
+						document.getElementById("grafo2D").style.display="none"
+						document.getElementById("sRevol").style.display="none"
+						document.getElementById("sParam").style.display="none"
+						document.getElementById("sRevolEDO").style.display="inline-block"
+						document.getElementById("textoGrafo").style.display="none"
+						document.getElementById("textoRevol").style.display="none"
+						document.getElementById("textoParam").style.display="none"
+						document.getElementById("textoRevolImp").style.display="block"
+						document.getElementById("expGUI").style.display="block"
+						document.getElementById("gui").style.display="block"
+					break;
+				
+				}
+			}
+			
+			//Prepara los campos con cadenas adecuadas para dibujar ese tipo de superficie
+			function dibujaObjeto(obj){
+			
+				switch(obj){
+				
+					case "balonRugby":						
+						document.getElementById("formulaXGen").value="cos(0.5*s)"
+						document.getElementById("formulaZGen").value="int(sqrt(1-0.25*sen(0.5*t)^2),t,0,s)"
+						document.getElementById("variableGen").value="s"
+						document.getElementById("ax").value="-PI"
+						document.getElementById("bx").value="PI"
+					break;
+					
+					
+					case "esfera":						
+						document.getElementById("formulaXGen").value="cos(s)"
+						document.getElementById("formulaZGen").value="sen(s)"
+						document.getElementById("variableGen").value="s"
+						document.getElementById("ax").value="-PI/2"
+						document.getElementById("bx").value="PI/2"
+					break;
+					
+					
+					case "pandeado":						
+						document.getElementById("formulaXGen").value="3*cos(0.5*s)"
+						document.getElementById("formulaZGen").value="int(sqrt(1-9/4*sen(0.5*t)^2),t,0,s)"
+						document.getElementById("variableGen").value="s"
+						document.getElementById("ax").value="-2*asen(2/3)"
+						document.getElementById("bx").value="2*asen(2/3)"
+					break;
+					
+					
+					case "pseudoesfera":						
+						document.getElementById("formulaXGen").value="exp(-s)"
+						document.getElementById("formulaZGen").value="int(sqrt(1-exp(-t)^2),t,0,s)"
+						document.getElementById("variableGen").value="s"
+						document.getElementById("ax").value="0"
+						document.getElementById("bx").value="5"
+					break;
+					
+					
+					case "hiperboloide":						
+						document.getElementById("formulaXGen").value="cosh(s)"
+						document.getElementById("formulaZGen").value="int(sqrt(1-senh(t)^2),t,0,s)"
+						document.getElementById("variableGen").value="s"
+						document.getElementById("ax").value="-asenh(1)"
+						document.getElementById("bx").value="asenh(1)"
+					break;
+					
+					
+					case "conico":						
+						document.getElementById("formulaXGen").value="0.1*senh(s)"
+						document.getElementById("formulaZGen").value="int(sqrt(1-0.01*cosh(t)^2),t,0,s)"
+						document.getElementById("variableGen").value="s"
+						document.getElementById("ax").value="0"
+						document.getElementById("bx").value="acosh(10)"
+					break;
+					
+					case "onduloide":
+						document.getElementById("x0").value="0.1"
+						document.getElementById("z0").value="0"
+						document.getElementById("s0").value="0"
+						document.getElementById("H").value="1"
+						document.getElementById("alpha").value="-10"
+						document.getElementById("beta").value="10"
+					break;
+					
+					case "nodoide":
+						document.getElementById("x0").value="1.1"
+						document.getElementById("z0").value="0"
+						document.getElementById("s0").value="0"
+						document.getElementById("H").value="1"
+						document.getElementById("alpha").value="-10"
+						document.getElementById("beta").value="10"
+					break;
+					
+					case "catenoide":
+						document.getElementById("x0").value="1"
+						document.getElementById("z0").value="0"
+						document.getElementById("s0").value="0"
+						document.getElementById("H").value="0"
+						document.getElementById("alpha").value="-10"
+						document.getElementById("beta").value="10"
+					break;
+					
+					case "plano":
+						document.getElementById("x0").value="1"
+						document.getElementById("z0").value="0"
+						document.getElementById("s0").value="PI/2"
+						document.getElementById("H").value="0"
+						document.getElementById("alpha").value="-1"
+						document.getElementById("beta").value="4"
+					break;
+					
+					case "cilindro":
+						document.getElementById("x0").value="1"
+						document.getElementById("z0").value="0"
+						document.getElementById("s0").value="0"
+						document.getElementById("H").value="0.5"
+						document.getElementById("alpha").value="-5"
+						document.getElementById("beta").value="5"
+					break;
+					
+					case "esfera2":
+						document.getElementById("x0").value="1"
+						document.getElementById("z0").value="0"
+						document.getElementById("s0").value="0"
+						document.getElementById("H").value="1"
+						document.getElementById("alpha").value="-PI/2"
+						document.getElementById("beta").value="PI/2"
+					break;
+				
+				}
+			
+			}
+			
+			
+			//Acciones al pulsar una tecla
+			document.onkeypress=function(){
+				
+				switch(event.keyCode){
+					case 101: //tecla e
+						controls.reset()
+						if(scene.children.length>2){
+							objetoActual.malla.matrix.identity()
+							objetoActual.malla.matrix.setPosition( miEscena3D.position.clone().negate() )
+							objetoActual.visorNormales.update()
+							posGiro=0
+							render()
+						}
+					break;
+					case 103: //tecla g
+						checkGira.setValue(!options.gira)
+					break;
+					
+					case 110: //tecla n
+						checkDibujaNormales.setValue(!options.dibujaNormales)
+					break;
+					
+					case 109://tecla m
+						checkVerMalla.setValue(!options.verMalla)
+					break;
+					
+					case 99: //tecla c
+						checkDireccionNormales.setValue(!options.invierteNormales)
+					break;
+					case 107://tecla k
+						if(options.curv=="gauss")
+							opcionCurv.setValue("media")
+						else
+							opcionCurv.setValue("gauss")
+					break;					
+					case 112://tecla p
+						options.perfilSuper()
+					break;
+				}
+			}
+		
+		</script>
+		
+		<footer></footer>
+	</body>
+
+</html>

@@ -1,0 +1,60 @@
+body {
+	background-color: #FFF793;
+	background-image: url(../imagenes/fondo.png);
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center center;
+	
+}
+
+
+h1 {
+	text-align:center;
+	padding: 20px;
+}
+
+nav {
+	text-align:center;
+}
+
+.menu {
+	background: #ccc;
+	color: #fff;
+	list-style:none;
+	display:inline-block;
+	margin:0;
+	padding:0;
+	border-radius:50px;
+}
+
+.menu li {
+	display:inline-block;
+}
+
+.menu li a{
+	padding: 10px 20px;
+	display: inline-block;
+	text-decoration:none;
+	color:black;
+}
+
+.menu li a:hover{
+	background:#fff;
+	border-radius:50px;
+}
+
+.menu li a:visited{
+	color:#000;
+}
+
+.menu li a:active{
+	color:#000;
+}
+
+footer {
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  text-align:center;
+}
