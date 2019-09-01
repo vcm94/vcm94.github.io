@@ -242,6 +242,7 @@ var options={
 					else{
 						miEscena3D.add( objetoActual.malla )
 						scene.add( objetoActual.visorNormales )
+						updateControlsGui()
 					}
 					
 					render()
@@ -484,6 +485,7 @@ function cambiaResolucionX(n){
 	if( objetoActual instanceof Superficie){
 		objetoActual=objetoActual.cambiaResolucion(n,objetoActual.k)
 		clearScene()
+		setCenter()
 		miEscena3D.add( objetoActual.malla )
 		objetoActual.visorNormales.update()
 		scene.add(objetoActual.visorNormales)
@@ -495,6 +497,7 @@ function cambiaResolucionY(k){
 	if( objetoActual instanceof Superficie){
 		objetoActual=objetoActual.cambiaResolucion(objetoActual.n,k)
 		clearScene()
+		setCenter()
 		miEscena3D.add( objetoActual.malla )
 		objetoActual.visorNormales.update()
 		scene.add(objetoActual.visorNormales)
