@@ -166,7 +166,7 @@ class NodoASA{
 			case "T":
 			
 				switch(ASA.atributo){
-					case CONSTANTE:
+					case 0:
 						switch(ASA.hijos[0].nodo){
 							case "PI":
 								arbolExp=new NodoConst(Math.PI)
@@ -180,11 +180,11 @@ class NodoASA{
 						}
 					break;
 					
-					case VARIABLE:
+					case 1:
 						arbolExp=new NodoIdent(ASA.hijos[0].nodo)
 					break;
 					
-					case FUNCION:
+					default:
 						arbolExp=new NodoFun(ASA.hijos[0].nodo,...ASA.hijos[2].toArbolExp())
 					break;
 					
@@ -270,9 +270,9 @@ function resuelveE(tokens){
 		 resul.mensajeErr="Error sintáctico: Falta una expresión"
 	 }		
 	 
-	 var primer_token=resul.tokens[0].token
+	 var primer_token=resul.tokens[0]
 	 if(!resul.err){
-		 if(primer_token==MAS || primer_token==MENOS)
+		 if(primer_token.token==OP_MASMENOS)
 			 resul.hijos.push(new NodoASA(resul.tokens.shift().valor))
 		 
 		 aux=resuelveE2(tokens)
@@ -327,20 +327,17 @@ function resuelveA2(tokens){
 	 if(resul.tokens.length==0)
 		return resul
 	
-	 var primer_token=resul.tokens[0].token
-	 switch(primer_token){
+	 var primer_token=resul.tokens[0]
+	 switch(primer_token.token){
 		 case PARENTESIS_IZQ:
 		 case PARENTESIS_DER:
-		 case OP_MULT:
-		 case OP_DIV:
-		 case CONSTANTE:
-		 case VARIABLE:
+		 case OP_MULTDIV:
+		 case OPERANDO:
 		 case FUNCION:
 		 case OPERADOR_EXP:
 		 case COMA:
 		 break;
-		 case MAS:
-		 case MENOS:
+		 case OP_MASMENOS:
 			 resul.hijos.push(new NodoASA(resul.tokens.shift().valor))
 			 aux=resuelveE2(tokens)
 			 if(aux.err){
@@ -453,20 +450,17 @@ function resuelveA3(tokens){
 		 if(resul.tokens.length==0)
 			return resul
 		
-		 var primer_token=resul.tokens[0].token
-		 switch(primer_token){
+		 var primer_token=resul.tokens[0]
+		 switch(primer_token.token){
 			 case PARENTESIS_IZQ:
 			 case PARENTESIS_DER:
-			 case MAS:
-			 case MENOS:
-			 case CONSTANTE:
-			 case VARIABLE:
+			 case OP_MASMENOS:
+			 case OPERANDO:
 			 case FUNCION:
 			 case OPERADOR_EXP:
 			 case COMA:
 			 break;
-			 case OP_MULT:
-			 case OP_DIV:
+			 case OP_MULTDIV:
 				 resul.hijos.push(new NodoASA(resul.tokens.shift().valor))
 				 aux=resuelveE3(tokens)
 				 if(aux.err){
@@ -578,16 +572,13 @@ function resuelveA4(tokens){
 		 if(resul.tokens.length==0)
 			return resul
 		
-		 var primer_token=resul.tokens[0].token
-		 switch(primer_token){
+		 var primer_token=resul.tokens[0]
+		 switch(primer_token.token){
 			 case PARENTESIS_IZQ:
 			 case PARENTESIS_DER:
-			 case MAS:
-			 case MENOS:
-			 case OP_MULT:
-			 case OP_DIV:
-			 case CONSTANTE:
-			 case VARIABLE:
+			 case OP_MASMENOS:
+			 case OP_MULTDIV:
+			 case OPERANDO:
 			 case FUNCION:
 			 case COMA:
 			 break;
@@ -652,8 +643,8 @@ function resuelveE4(tokens){
 	 }		
 	 
 	 if(!resul.err){
-		 var primer_token=resul.tokens[0].token
-		 switch(primer_token){
+		 var primer_token=resul.tokens[0]
+		 switch(primer_token.token){
 			 case PARENTESIS_IZQ:
 				 resul.tokens.shift()
 				 resul.hijos.push(new NodoASA("("))
@@ -679,8 +670,7 @@ function resuelveE4(tokens){
 				resul.err=true
 				resul.mensajeErr="Error sintáctico: Paréntesis derecho no esperado"
 			 break;			 
-			 case CONSTANTE:
-			 case VARIABLE:
+			 case OPERANDO:
 			 case FUNCION:
 				 aux=resuelveT(tokens)
 				 if(aux.err){
@@ -690,13 +680,11 @@ function resuelveE4(tokens){
 				 }
 				 resul.tokens=aux.tokens
 				 nodosHijo=aux.hijos
-				 resul.hijos.push(new NodoASA("T", nodosHijo,primer_token))
+				 resul.hijos.push(new NodoASA("T", nodosHijo,(primer_token.atributo!=undefined)?primer_token.atributo:2)) //Ponemos atributo igual a 2 para funciones
 			 break;
 			 case OPERADOR_EXP:
-			 case MAS:
-			 case MENOS:
-			 case OP_MULT:
-			 case OP_DIV:
+			 case OP_MASMENOS:
+			 case OP_MULTDIV:
 				resul.err=true
 				resul.mensajeErr="Error sintáctico: No se esperaba el operador "+resul.tokens[0].valor
 			 break;			 
@@ -752,8 +740,8 @@ function resuelveT(tokens){
 		 
 	 
 	 if(!resul.err){
-		 var primer_token=resul.tokens[0].token
-		 switch(primer_token){
+		 var primer_token=resul.tokens[0]
+		 switch(primer_token.token){
 			 case PARENTESIS_IZQ:
 				resul.err=true
 				resul.mensajeErr="Error sintáctico: Paréntesis izquierdo no esperado"			
@@ -765,8 +753,7 @@ function resuelveT(tokens){
 				resul.mensajeErr="Error sintáctico: Paréntesis derecho no esperado"
 			 break;
 			 
-			 case MAS:
-			 case MENOS:
+			 case OP_MASMENOS:
 				resul.err=true
 				resul.mensajeErr="Error sintáctico: No se esperaba "+resul.tokens[0].valor
 			 break;
@@ -776,8 +763,7 @@ function resuelveT(tokens){
 				resul.mensajeErr="Error sintáctico: No se esperaba una coma"
 			 break;
 			 
-			 case CONSTANTE:
-			 case VARIABLE:
+			 case OPERANDO:
 				 resul.hijos.push(new NodoASA(resul.tokens.shift().valor))
 			 break;
 			 case FUNCION:
@@ -806,8 +792,7 @@ function resuelveT(tokens){
 					 
 				 }
 			 break;
-			 case OP_MULT:
-			 case OP_DIV:
+			 case OP_MULTDIV:
 				resul.err=true
 				resul.mensajeErr="Error sintáctico: No se esperaba el operador "+resul.tokens[0].valor
 			 break;
@@ -914,18 +899,15 @@ function resuelveR(tokens){
 		 if(resul.tokens.length==0)
 			return resul
 		
-		 var primer_token=resul.tokens[0].token
-		 switch(primer_token){
+		 var primer_token=resul.tokens[0]
+		 switch(primer_token.token){
 			 case PARENTESIS_IZQ:
 			 case PARENTESIS_DER:
-			 case OP_MULT:
-			 case OP_DIV:
-			 case CONSTANTE:
-			 case VARIABLE:
+			 case OP_MULTDIV:
+			 case OPERANDO:
 			 case FUNCION:
 			 case OPERADOR_EXP:
-			 case MAS:
-			 case MENOS:
+			 case OP_MASMENOS:
 			 break;
 			 case COMA:
 				 resul.hijos.push(new NodoASA(resul.tokens.shift().valor))
