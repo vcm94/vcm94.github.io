@@ -176,6 +176,17 @@
 					<input type="button" id="botonSupRevol" value="Dibujar superficie de revolución sobre el eje Z" onclick="dibujaRevol()">
 					</br>
 					</br>
+
+					<select id="predefinidasRevolConst" onchange='dibujaObjeto(this.options[this.selectedIndex].value)'>
+						<option selected="true" disabled="disabled">Superficies con curvatura de Gauss constante</option>
+						<option value="balonRugby"Rellenar para balón de rugby</option>
+						<option value="esfera">Rellenar para esfera</option>
+						<option value="pandeado">Rellenar para superficie de tipo pandeado</option>
+						<option value="pseudoesfera">Rellenar para pseudoesfera</option>
+						<option value="hiperboloide">Rellenar para hiperboloide</option>
+						<option value="conico">Rellenar para superficie de tipo cónico</option>
+					</select>
+					<!--
 					<input type="button" id="botonBalon" value="Rellenar para balón de rugby" onclick='dibujaObjeto("balonRugby")'>
 					<input type="button" id="botonEsfera" value="Rellenar para esfera" onclick='dibujaObjeto("esfera")'>
 					<input type="button" id="botonPandeado" value="Rellenar para superficie de tipo pandeado" onclick='dibujaObjeto("pandeado")'>
@@ -183,6 +194,7 @@
 					<input type="button" id="botonPseudoesfera" value="Rellenar para pseudoesfera" onclick='dibujaObjeto("pseudoesfera")'>
 					<input type="button" id="botonHiperboloide" value="Rellenar para hiperboloide" onclick='dibujaObjeto("hiperboloide")'>
 					<input type="button" id="botonConico" value="Rellenar para superficie de tipo cónico" onclick='dibujaObjeto("conico")'>
+					-->
 				</form>
 				
 				<form id="sParam">
