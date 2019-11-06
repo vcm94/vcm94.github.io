@@ -176,7 +176,6 @@
 					<input type="button" id="botonSupRevol" value="Dibujar superficie de revolución sobre el eje Z" onclick="dibujaRevol()">
 					</br>
 					</br>
-
 					<select id="predefinidasRevolConst" onchange='dibujaObjeto(this.options[this.selectedIndex].value)'>
 						<option selected="true" disabled="disabled">Superficies con curvatura de Gauss constante</option>
 						<option value="balonRugby">Rellenar para balón de rugby</option>
@@ -216,6 +215,12 @@
 					<input type="text" placeholder="d" id="dd" size="1" > )
 					</br>
 					<input type="button" id="botonSuperficie" value="Dibujar superficie" onclick="dibujaSuper()">
+					</br>
+					</br>
+					<select id="predefinidasParam" onchange='dibujaObjeto(this.options[this.selectedIndex].value)'>
+						<option selected="true" disabled="disabled">Superficies predefinidas/option>
+						<option value="kuen">Rellenar para la superficie de Kuen (curvatura de Gauss contante)</option>
+					</select>
 				</form>
 				
 				<form id="sRevolEDO">
@@ -445,7 +450,55 @@
 			function dibujaObjeto(obj){
 			
 				switch(obj){
-				
+						
+					case "kuen":						
+						document.getElementById("formulaX").value="2*(cos(u)+u*sen(u))*sen(v)/(1+u^2*sen(v)^2)"
+						document.getElementById("formulaY").value="2*(sen(u)-u*cos(u))*sen(v)/(1+u^2*sen(v)^2)"
+						document.getElementById("formulaZ").value="log(tan(v/2))+2*cos(v)/(1+u^2*sen(v)^2)"
+						document.getElementById("variableU").value="u"
+						document.getElementById("variableV").value="v"
+						document.getElementById("aa").value="-4"
+						document.getElementById("bb").value="4"
+						document.getElementById("cc").value="0"
+						document.getElementById("dd").value="PI"
+					break;
+						
+					case "klein":						
+						document.getElementById("formulaX").value="(2+cos(u/2)*sen(v)-sen(u/2)*sen(2*v))*cos(u)"
+						document.getElementById("formulaY").value="(2+cos(u/2)*sen(v)-sen(u/2)*sen(2*v))*sen(u)"
+						document.getElementById("formulaZ").value="sen(u/2)*sen(v)+cos(u/2)*sen(2*v)"
+						document.getElementById("variableU").value="u"
+						document.getElementById("variableV").value="v"
+						document.getElementById("aa").value="-PI/4"
+						document.getElementById("bb").value="3*PI/2"
+						document.getElementById("cc").value="0"
+						document.getElementById("dd").value="2*PI"
+					break;
+						
+					case "bandaM":						
+						document.getElementById("formulaX").value="cos(u)+v*cos(u/2)*cos(u)"
+						document.getElementById("formulaY").value="sen(u)+v*cos(u/2)*sen(u)"
+						document.getElementById("formulaZ").value="v*sen(u/2)"
+						document.getElementById("variableU").value="u"
+						document.getElementById("variableV").value="v"
+						document.getElementById("aa").value="0"
+						document.getElementById("bb").value="2*PI"
+						document.getElementById("cc").value="-0.3"
+						document.getElementById("dd").value="0.3"
+					break;
+						
+					case "bandaM":						
+						document.getElementById("formulaX").value=""
+						document.getElementById("formulaY").value=""
+						document.getElementById("formulaZ").value=""
+						document.getElementById("variableU").value="u"
+						document.getElementById("variableV").value="v"
+						document.getElementById("aa").value=""
+						document.getElementById("bb").value=""
+						document.getElementById("cc").value=""
+						document.getElementById("dd").value=""
+					break;
+					
 					case "plano2":						
 						document.getElementById("formulaXGen").value="s"
 						document.getElementById("formulaZGen").value="1"
