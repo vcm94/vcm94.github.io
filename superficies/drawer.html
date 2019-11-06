@@ -218,8 +218,10 @@
 					</br>
 					</br>
 					<select id="predefinidasParam" onchange='dibujaObjeto(this.options[this.selectedIndex].value)'>
-						<option selected="true" disabled="disabled">Superficies predefinidas/option>
+						<option selected="true" disabled="disabled">Superficies predefinidas</option>
 						<option value="kuen">Rellenar para la superficie de Kuen (curvatura de Gauss contante)</option>
+						<option value="klein">Rellenar para la botella de Klein</option>
+						<option value="bandaM">Rellenar para la banda de Möbius</option>
 					</select>
 				</form>
 				
@@ -637,42 +639,43 @@
 			
 			//Acciones al pulsar una tecla
 			document.onkeypress=function(){
-				
-				switch(event.keyCode){
-					case 101: //tecla e
-						controls.reset()
-						if(scene.children.length>2){
-							objetoActual.malla.matrix.identity()
-							objetoActual.malla.matrix.setPosition( miEscena3D.position.clone().negate() )
-							objetoActual.visorNormales.update()
-							posGiro=0
-							render()
-						}
-					break;
-					case 103: //tecla g
-						checkGira.setValue(!options.gira)
-					break;
-					
-					case 110: //tecla n
-						checkDibujaNormales.setValue(!options.dibujaNormales)
-					break;
-					
-					case 109://tecla m
-						checkVerMalla.setValue(!options.verMalla)
-					break;
-					
-					case 99: //tecla c
-						checkDireccionNormales.setValue(!options.invierteNormales)
-					break;
-					case 107://tecla k
-						if(options.curv=="gauss")
-							opcionCurv.setValue("media")
-						else
-							opcionCurv.setValue("gauss")
-					break;					
-					case 112://tecla p
-						options.perfilSuper()
-					break;
+				if(event.ctrlKey){
+					switch(event.keyCode){
+						case 101: //tecla e
+							controls.reset()
+							if(scene.children.length>2){
+								objetoActual.malla.matrix.identity()
+								objetoActual.malla.matrix.setPosition( miEscena3D.position.clone().negate() )
+								objetoActual.visorNormales.update()
+								posGiro=0
+								render()
+							}
+						break;
+						case 103: //tecla g
+							checkGira.setValue(!options.gira)
+						break;
+
+						case 110: //tecla n
+							checkDibujaNormales.setValue(!options.dibujaNormales)
+						break;
+
+						case 109://tecla m
+							checkVerMalla.setValue(!options.verMalla)
+						break;
+
+						case 99: //tecla c
+							checkDireccionNormales.setValue(!options.invierteNormales)
+						break;
+						case 107://tecla k
+							if(options.curv=="gauss")
+								opcionCurv.setValue("media")
+							else
+								opcionCurv.setValue("gauss")
+						break;					
+						case 112://tecla p
+							options.perfilSuper()
+						break;
+					}
 				}
 			}
 		
