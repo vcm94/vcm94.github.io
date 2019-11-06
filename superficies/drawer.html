@@ -179,12 +179,15 @@
 
 					<select id="predefinidasRevolConst" onchange='dibujaObjeto(this.options[this.selectedIndex].value)'>
 						<option selected="true" disabled="disabled">Superficies con curvatura de Gauss constante</option>
-						<option value="balonRugby"Rellenar para balón de rugby</option>
+						<option value="balonRugby">Rellenar para balón de rugby</option>
 						<option value="esfera">Rellenar para esfera</option>
 						<option value="pandeado">Rellenar para superficie de tipo pandeado</option>
 						<option value="pseudoesfera">Rellenar para pseudoesfera</option>
 						<option value="hiperboloide">Rellenar para hiperboloide</option>
 						<option value="conico">Rellenar para superficie de tipo cónico</option>
+						<option value="plano2">Rellenar para plano</option>
+						<option value="cono">Rellenar para cono</option>
+						<option value="cilindro2">Rellenar para cilindro</option>
 					</select>
 					<!--
 					<input type="button" id="botonBalon" value="Rellenar para balón de rugby" onclick='dibujaObjeto("balonRugby")'>
@@ -231,6 +234,16 @@
 					<input type="button" id="botonSuperficieImp" value="Dibujar superficie" onclick="dibujaSuperRevolImp()">
 					</br>
 					</br>
+					<select id="predefinidasRevolConst2" onchange='dibujaObjeto(this.options[this.selectedIndex].value)'>
+						<option selected="true" disabled="disabled">Superficies con curvatura media constante</option>
+						<option value="onduloide">Rellenar para onduloide</option>
+						<option value="nodoide">Rellenar para nodoide</option>
+						<option value="catenoide">Rellenar para catenoide/option>
+						<option value="plano">Rellenar para plano</option>
+						<option value="cilindro">Rellenar para cilindro</option>
+						<option value="esfera2">Rellenar para esfera</option>
+					</select>
+					<!-- 
 					<input type="button" id="botonOndul" value="Rellenar para onduloide" onclick='dibujaObjeto("onduloide")'>
 					<input type="button" id="botonNodoid" value="Rellenar para nodoide" onclick='dibujaObjeto("nodoide")'>
 					<input type="button" id="botonCatenoid" value="Rellenar para catenoide" onclick='dibujaObjeto("catenoide")'>
@@ -238,7 +251,8 @@
 					<input type="button" id="botonPlano" value="Rellenar para plano" onclick='dibujaObjeto("plano")'>
 					<input type="button" id="botonCilindro" value="Rellenar para cilindro" onclick='dibujaObjeto("cilindro")'>
 					<input type="button" id="botonEsfera2" value="Rellenar para esfera" onclick='dibujaObjeto("esfera2")'>
-				</form>
+					-->
+					</form>
 				
 				
 			
@@ -432,6 +446,30 @@
 			
 				switch(obj){
 				
+					case "plano2":						
+						document.getElementById("formulaXGen").value="s"
+						document.getElementById("formulaZGen").value="1"
+						document.getElementById("variableGen").value="s"
+						document.getElementById("ax").value="0"
+						document.getElementById("bx").value="3"
+					break;
+						
+					case "cono":						
+						document.getElementById("formulaXGen").value="s"
+						document.getElementById("formulaZGen").value="s"
+						document.getElementById("variableGen").value="s"
+						document.getElementById("ax").value="0"
+						document.getElementById("bx").value="3"
+					break;
+						
+					case "cilindro2":						
+						document.getElementById("formulaXGen").value="1"
+						document.getElementById("formulaZGen").value="s"
+						document.getElementById("variableGen").value="s"
+						document.getElementById("ax").value="0"
+						document.getElementById("bx").value="3"
+					break;
+						
 					case "balonRugby":						
 						document.getElementById("formulaXGen").value="cos(0.5*s)"
 						document.getElementById("formulaZGen").value="int(sqrt(1-0.25*sen(0.5*t)^2),t,0,s)"
