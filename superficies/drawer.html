@@ -639,8 +639,8 @@
 			
 			//Acciones al pulsar una tecla
 			document.onkeypress=function(){
-				if(event.ctrlKey){
-					switch(event.srcElement.nodeName==="BODY"){
+				if(event.srcElement.nodeName==="BODY"){
+					switch(event.keyCode){
 						case 101: //tecla e
 							controls.reset()
 							if(scene.children.length>2){
