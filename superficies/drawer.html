@@ -211,8 +211,13 @@
 					<select id="predefinidasParam" onchange='dibujaObjeto(this.options[this.selectedIndex].value)'>
 						<option selected="true" disabled="disabled">Superficies predefinidas</option>
 						<option value="kuen">Superficie de Kuen (curvatura de Gauss contante)</option>
+						<option value="dini">Superficie de Dini (curvatura de Gauss contante)</option>
 						<option value="klein">Botella de Klein</option>
 						<option value="bandaM">Banda de Möbius</option>
+						<option value="sacacorchos">Superficie sacacorchos</option>
+						<option value="ocho">Superficie en ocho</option>
+						<option value="mono">Silla del mono</option>
+						<option value="astroidal">Esfera astroidal</option>
 					</select>
 				</form>
 				
@@ -435,6 +440,67 @@
 			
 				switch(obj){
 						
+					case "astroidal":						
+						document.getElementById("formulaX").value="(cos(u)*cos(v))^3"
+						document.getElementById("formulaY").value="(sen(u)*cos(v))^3"
+						document.getElementById("formulaZ").value="sen(v)^3"
+						document.getElementById("variableU").value="u"
+						document.getElementById("variableV").value="v"
+						document.getElementById("aa").value="0"
+						document.getElementById("bb").value="2*PI"
+						document.getElementById("cc").value="-PI/2"
+						document.getElementById("dd").value="PI/2"
+					break;
+						
+					case "mono":						
+						document.getElementById("formulaX").value="u"
+						document.getElementById("formulaY").value="v"
+						document.getElementById("formulaZ").value="u^3-3*u*v^2"
+						document.getElementById("variableU").value="u"
+						document.getElementById("variableV").value="v"
+						document.getElementById("aa").value="-1.5"
+						document.getElementById("bb").value="1.5"
+						document.getElementById("cc").value="-1.5"
+						document.getElementById("dd").value="1.5"
+					break;
+						
+					
+					case "ocho":						
+						document.getElementById("formulaX").value="cos(u)*cos(v)*sen(v)"
+						document.getElementById("formulaY").value="sen(u)*cos(v)*sen(v)"
+						document.getElementById("formulaZ").value="sen(v)"
+						document.getElementById("variableU").value="u"
+						document.getElementById("variableV").value="v"
+						document.getElementById("aa").value="0"
+						document.getElementById("bb").value="2*PI"
+						document.getElementById("cc").value="-PI/2"
+						document.getElementById("dd").value="PI/2"
+					break;
+					
+					case "sacacorchos":						
+						document.getElementById("formulaX").value="cos(u)*cos(v)"
+						document.getElementById("formulaY").value="sen(u)*cos(v)"
+						document.getElementById("formulaZ").value="sen(v)+u"
+						document.getElementById("variableU").value="u"
+						document.getElementById("variableV").value="v"
+						document.getElementById("aa").value="0"
+						document.getElementById("bb").value="2*PI"
+						document.getElementById("cc").value="-PI"
+						document.getElementById("dd").value="PI"
+					break;
+						
+					case "dini":						
+						document.getElementById("formulaX").value="cos(u)*sen(v)"
+						document.getElementById("formulaY").value="sen(u)*sen(v)"
+						document.getElementById("formulaZ").value="cos(v)+log(tan(v/2))+0.2*u"
+						document.getElementById("variableU").value="u"
+						document.getElementById("variableV").value="v"
+						document.getElementById("aa").value="0"
+						document.getElementById("bb").value="4*PI"
+						document.getElementById("cc").value="0.1"
+						document.getElementById("dd").value="2"
+					break;	
+					
 					case "kuen":						
 						document.getElementById("formulaX").value="2*(cos(u)+u*sen(u))*sen(v)/(1+u^2*sen(v)^2)"
 						document.getElementById("formulaY").value="2*(sen(u)-u*cos(u))*sen(v)/(1+u^2*sen(v)^2)"
@@ -454,7 +520,7 @@
 						document.getElementById("variableU").value="u"
 						document.getElementById("variableV").value="v"
 						document.getElementById("aa").value="-PI/4"
-						document.getElementById("bb").value="3*PI/2"
+						document.getElementById("bb").value="2*PI"
 						document.getElementById("cc").value="0"
 						document.getElementById("dd").value="2*PI"
 					break;
