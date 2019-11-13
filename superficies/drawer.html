@@ -150,7 +150,7 @@
 				<form id="grafo2D">
 					<textarea placeholder="Introduce aquí tu grafo" rows="5" cols="50" id="formula" ></textarea>
 					<br/>
-					<input type="text" placeholder="Variable" id="variable" size="3">
+					<input type="text" placeholder="Variable" id="variable" size="1">
 					</br>
 					Intervalo: (
 					<input type="text" placeholder="a" id="a" size="1" > , 
@@ -167,11 +167,11 @@
 					<textarea placeholder="Introduce aquí la coordenada X" rows="5" cols="50" id="formulaXGen" ></textarea>
 					<textarea placeholder="Introduce aquí la coordenada Z" rows="5" cols="50" id="formulaZGen" ></textarea>
 					<br/>
-					<input type="text" placeholder="Variable" id="variableGen" size="3" >
+					<input type="text" placeholder="Variable" id="variableGen" size="1" >
 					</br>
 					Intervalo: (
-					<input type="text" placeholder="a" id="ax" size="1" > , 
-					<input type="text" placeholder="b" id="bx" size="1" > )
+					<input type="text" placeholder="a" id="ax" size="5" > , 
+					<input type="text" placeholder="b" id="bx" size="5" > )
 					</br>
 					<input type="button" id="botonSupRevol" value="Dibujar superficie de revolución sobre el eje Z" onclick="dibujaRevol()">
 					</br>
@@ -200,10 +200,10 @@
 					<input type="text" placeholder="v" id="variableV" size="1" >
 					</br>
 					Rectángulo: (
-					<input type="text" placeholder="a" id="aa" size="1" > , 
-					<input type="text" placeholder="b" id="bb" size="1" > )x(
-					<input type="text" placeholder="c" id="cc" size="1" > , 
-					<input type="text" placeholder="d" id="dd" size="1" > )
+					<input type="text" placeholder="a" id="aa" size="5" > , 
+					<input type="text" placeholder="b" id="bb" size="5" > )x(
+					<input type="text" placeholder="c" id="cc" size="5" > , 
+					<input type="text" placeholder="d" id="dd" size="5" > )
 					</br>
 					<input type="button" id="botonSuperficie" value="Dibujar superficie" onclick="dibujaSuper()">
 					</br>
@@ -219,7 +219,7 @@
 						<option value="mono">Silla del mono</option>
 						<option value="astroidal">Esfera astroidal</option>
 						<option value="toro">Toro</option>
-						<option value="elipsoide">EElipsoide</option>
+						<option value="elipsoide">Elipsoide</option>
 						<option value="helicoide">Helicoide (curvatura media contante)</option>
 						<option value="nudo">Nudo</option>
 					</select>
@@ -227,15 +227,15 @@
 				
 				<form id="sRevolEDO">
 					Condición inicial:</br>
-					(x0,z0,s0)=(<input type="text" placeholder="x0" id="x0" size="1" >,
-					<input type="text" placeholder="z0" id="z0" size="1" >,
-					<input type="text" placeholder="s0" id="s0" size="1" >)
+					(x0,z0,s0)=(<input type="text" placeholder="x0" id="x0" size="5" >,
+					<input type="text" placeholder="z0" id="z0" size="5" >,
+					<input type="text" placeholder="s0" id="s0" size="5" >)
 					</br>
-					Curvatura media: H=<input type="text" placeholder="H" id="H" size="1">
+					Curvatura media: H=<input type="text" placeholder="H" id="H" size="5">
 					</br>
 					Intervalo: (
-					<input type="text" placeholder="a" id="alpha" size="1" > , 
-					<input type="text" placeholder="b" id="beta" size="1" > )
+					<input type="text" placeholder="a" id="alpha" size="5" > , 
+					<input type="text" placeholder="b" id="beta" size="5" > )
 					<p id="E"></p>
 					</br>
 					<input type="button" id="botonSuperficieImp" value="Dibujar superficie" onclick="dibujaSuperRevolImp()">
