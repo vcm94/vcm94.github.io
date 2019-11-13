@@ -218,6 +218,10 @@
 						<option value="ocho">Superficie en ocho</option>
 						<option value="mono">Silla del mono</option>
 						<option value="astroidal">Esfera astroidal</option>
+						<option value="toro">Toro</option>
+						<option value="elipsoide">EElipsoide</option>
+						<option value="helicoide">Helicoide (curvatura media contante)</option>
+						<option value="nudo">Nudo</option>
 					</select>
 				</form>
 				
@@ -439,7 +443,58 @@
 			function dibujaObjeto(obj){
 			
 				switch(obj){
+						<option value="elipsoide">EElipsoide</option>
+						<option value="helicoide">Helicoide</option>
+						<option value="nudo">Nudo</option>	
+					case "toro":						
+						document.getElementById("formulaX").value="(1+0.3*cos(u))*sen(v)"
+						document.getElementById("formulaY").value="0.3*sen(u)"
+						document.getElementById("formulaZ").value="(1+0.3*cos(u))*cos(v)"
+						document.getElementById("variableU").value="u"
+						document.getElementById("variableV").value="v"
+						document.getElementById("aa").value="0"
+						document.getElementById("bb").value="2*PI"
+						document.getElementById("cc").value="0"
+						document.getElementById("dd").value="2*PI"
+					break;	
+					
+					case "helicoide":						
+						document.getElementById("formulaX").value="u"
+						document.getElementById("formulaY").value="v*sen(u)"
+						document.getElementById("formulaZ").value="v*cos(u)"
+						document.getElementById("variableU").value="u"
+						document.getElementById("variableV").value="v"
+						document.getElementById("aa").value="0"
+						document.getElementById("bb").value="2*PI"
+						document.getElementById("cc").value="-5"
+						document.getElementById("dd").value="5"
+					break;
 						
+					case "elipsoide":						
+						document.getElementById("formulaX").value="2*sen(u)*sen(v)"
+						document.getElementById("formulaY").value="2*sen(u)*cos(v)"
+						document.getElementById("formulaZ").value="4*cos(u)"
+						document.getElementById("variableU").value="u"
+						document.getElementById("variableV").value="v"
+						document.getElementById("aa").value="0"
+						document.getElementById("bb").value="PI"
+						document.getElementById("cc").value="0"
+						document.getElementById("dd").value="2*PI"
+					break;
+						
+					case "nudo":						
+						document.getElementById("formulaX").value="sen(v)+2*cos(1.5*u)"
+						document.getElementById("formulaY").value="sen(u)*cos(v)+3*sen(u)*(1.5+sen(1.5*u)/2)"
+						document.getElementById("formulaZ").value="cos(u)*cos(v)+3*cos(u)*(1.5+sen(1.5*u)/2)"
+						document.getElementById("variableU").value="u"
+						document.getElementById("variableV").value="v"
+						document.getElementById("aa").value="-2*PI"
+						document.getElementById("bb").value="2*PI"
+						document.getElementById("cc").value="-PI"
+						document.getElementById("dd").value="PI"
+					break;
+						
+				
 					case "astroidal":						
 						document.getElementById("formulaX").value="(cos(u)*cos(v))^3"
 						document.getElementById("formulaY").value="sen(v)^3"
