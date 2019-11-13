@@ -442,8 +442,8 @@
 						
 					case "astroidal":						
 						document.getElementById("formulaX").value="(cos(u)*cos(v))^3"
-						document.getElementById("formulaY").value="(sen(u)*cos(v))^3"
-						document.getElementById("formulaZ").value="sen(v)^3"
+						document.getElementById("formulaY").value="sen(v)^3"
+						document.getElementById("formulaZ").value="(sen(u)*cos(v))^3"
 						document.getElementById("variableU").value="u"
 						document.getElementById("variableV").value="v"
 						document.getElementById("aa").value="0"
@@ -453,9 +453,9 @@
 					break;
 						
 					case "mono":						
-						document.getElementById("formulaX").value="u"
-						document.getElementById("formulaY").value="v"
-						document.getElementById("formulaZ").value="u^3-3*u*v^2"
+						document.getElementById("formulaX").value="u^3-3*u*v^2"
+						document.getElementById("formulaY").value="u"
+						document.getElementById("formulaZ").value="v"
 						document.getElementById("variableU").value="u"
 						document.getElementById("variableV").value="v"
 						document.getElementById("aa").value="-1.5"
@@ -466,8 +466,8 @@
 						
 					
 					case "ocho":						
-						document.getElementById("formulaX").value="cos(u)*cos(v)*sen(v)"
-						document.getElementById("formulaY").value="sen(u)*cos(v)*sen(v)"
+						document.getElementById("formulaX").value="sen(u)*cos(v)*sen(v)"
+						document.getElementById("formulaY").value="cos(u)*cos(v)*sen(v)"
 						document.getElementById("formulaZ").value="sen(v)"
 						document.getElementById("variableU").value="u"
 						document.getElementById("variableV").value="v"
@@ -490,9 +490,9 @@
 					break;
 						
 					case "dini":						
-						document.getElementById("formulaX").value="cos(u)*sen(v)"
-						document.getElementById("formulaY").value="sen(u)*sen(v)"
-						document.getElementById("formulaZ").value="cos(v)+log(tan(v/2))+0.2*u"
+						document.getElementById("formulaX").value="cos(v)+log(tan(v/2))+0.2*u"
+						document.getElementById("formulaY").value="cos(u)*sen(v)"
+						document.getElementById("formulaZ").value="sen(u)*sen(v)"
 						document.getElementById("variableU").value="u"
 						document.getElementById("variableV").value="v"
 						document.getElementById("aa").value="0"
@@ -515,11 +515,11 @@
 						
 					case "klein":						
 						document.getElementById("formulaX").value="(2+cos(u/2)*sen(v)-sen(u/2)*sen(2*v))*cos(u)"
-						document.getElementById("formulaY").value="(2+cos(u/2)*sen(v)-sen(u/2)*sen(2*v))*sen(u)"
-						document.getElementById("formulaZ").value="sen(u/2)*sen(v)+cos(u/2)*sen(2*v)"
+						document.getElementById("formulaY").value="sen(u/2)*sen(v)+cos(u/2)*sen(2*v)"
+						document.getElementById("formulaZ").value="(2+cos(u/2)*sen(v)-sen(u/2)*sen(2*v))*sen(u)"
 						document.getElementById("variableU").value="u"
 						document.getElementById("variableV").value="v"
-						document.getElementById("aa").value="-PI/4"
+						document.getElementById("aa").value="0"
 						document.getElementById("bb").value="2*PI"
 						document.getElementById("cc").value="0"
 						document.getElementById("dd").value="2*PI"
